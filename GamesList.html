@@ -13,20 +13,29 @@
             <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Torna alla Home</a>
             <h1>Libreria Giochi</h1>
         </header>
+
+        <div class="filter-container">
+            <input type="text" id="searchInput" placeholder="Cerca un titolo..." onkeyup="filterGames()">
+            <div class="tags-bar">
+                <button class="tag-btn active" onclick="filterByTag('all')">Tutti</button>
+                <button class="tag-btn" onclick="filterByTag('Pokemon')">Pokemon</button>
+                <button class="tag-btn" onclick="filterByTag('Nintendo')">Nintendo</button>
+            </div>
+        </div>
         
-        <div class="game-list">
-            <div class="game-card">
+        <div class="game-list" id="gameList">
+            <div class="game-card" data-tags="Pokemon Nintendo">
                 <img src="https://img.pokemondb.net/boxes/soulsilver.jpg" alt="Soulsilver" class="game-cover">
                 <div class="game-info">
                     <h3>Pokemon Soulsilver</h3>
                     <p><i class="fas fa-clock"></i> ~2200 hours</p>
-                    <a href="https://www.youtube.com/@_zekkenxxiii_" target="_blank" class="yt-link">
+                    <a href="https://youtube.com/playlist?list=PLjQ8k2giXZsq8QWU4n0x8CMJzDQo8htVX" target="_blank" class="yt-link">
                         <i class="fab fa-youtube"></i> Playlist Gameplay
                     </a>
                 </div>
             </div>
 
-            <div class="game-card">
+            <div class="game-card" data-tags="Pokemon Nintendo">
                 <img src="https://img.pokemondb.net/boxes/platinum.jpg" alt="Platinum" class="game-cover">
                 <div class="game-info">
                     <h3>Pokemon Platinum</h3>
@@ -34,7 +43,7 @@
                 </div>
             </div>
 
-            <div class="game-card">
+            <div class="game-card" data-tags="Pokemon Nintendo">
                 <img src="https://img.pokemondb.net/boxes/lg/emerald-large.jpg" alt="Emerald" class="game-cover">
                 <div class="game-info">
                     <h3>Pokemon Emerald</h3>
@@ -43,5 +52,35 @@
             </div>
         </div>
     </div>
+
+    <script>
+    function filterGames() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.getElementsByClassName('game-card');
+        for (let card of cards) {
+            let title = card.querySelector('h3').innerText.toLowerCase();
+            card.style.display = title.includes(input) ? "flex" : "none";
+        }
+    }
+
+    function filterByTag(tag) {
+        let cards = document.getElementsByClassName('game-card');
+        let buttons = document.getElementsByClassName('tag-btn');
+        for (let btn of buttons) {
+            btn.classList.remove('active');
+            if(btn.innerText.toLowerCase() === tag.toLowerCase() || (tag === 'all' && btn.innerText === 'Tutti')) {
+                btn.classList.add('active');
+            }
+        }
+        for (let card of cards) {
+            let tags = card.getAttribute('data-tags');
+            if (tag === 'all' || tags.includes(tag)) {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        }
+    }
+    </script>
 </body>
 </html>
